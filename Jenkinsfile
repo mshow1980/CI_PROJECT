@@ -11,7 +11,7 @@ pipeline {
         IMAGE_NAME = "${DOCKER_USER}"+"/"+"${ APP_NAME}"
         VERSION = '0.3'
         IMAGE_TAG = "${VERSION}-${BUILD_NUMBER}"
-        REGISTRY_CRED = 'Docker_token'
+        REGISTRY_CRED = 'docker-login'
     }
     stages{
         stage('CLEANWS'){
@@ -76,7 +76,7 @@ pipeline {
         stage('Docker build'){
             steps{
                 script{ 
-                    withDockerRegistry(credentialsId: 'Docker_token', toolName: 'doker') {
+                    withDockerRegistry(credentialsId: 'docker-login', toolName: 'doker') {
                         docker_image = docker.build "${IMAGE_NAME}"
                     }
                 }
