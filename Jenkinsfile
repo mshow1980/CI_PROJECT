@@ -86,10 +86,11 @@ pipeline {
             steps{
                 script{ 
                     sh "trivy image ${docker_image} --format table -o tryvyimage.html" 
+                }
             }
         }
     }
-post {
+    post {
     always {
         emailext attachLog: true,
             subject: "'${currentBuild.result}'",
@@ -98,7 +99,6 @@ post {
                 "URL: ${env.BUILD_URL}<br/>",
             to: 'scnionventureslls@gmail.com',                              
             attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
-            }
         }
     }
 }
