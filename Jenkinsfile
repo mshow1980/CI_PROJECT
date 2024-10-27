@@ -76,7 +76,7 @@ pipeline {
         stage('Docker build'){
             steps{
                 script{ 
-                    withDockerRegistry(credentialsId: 'Docker_token') {
+                    withDockerRegistry(credentialsId: 'Docker_token', toolName: 'doker') {
                         docker_image = docker.build "${IMAGE_NAME}"
                     }
                 }
