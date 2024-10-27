@@ -101,15 +101,25 @@ pipeline {
                 }
             }
         }
-        stage('Second Git Checkout'){
+        stage('Updating Image Tag'){
             steps{
                 script{ 
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CD_PROJECT_ARGOCD.git']]) 
                     sh ''' 
                     cat manifest.yaml
-                    sed -i 's|image: mshow1980/reditt-app:.* |image: mshow1980/reditt-app:'${IMAGE_TAG}'/'
-                    echo "manifest.yaml"
-                    git add .
+                    sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' manifest.yaml
+                    cat manifest.yam
+                    '''
+                }
+            }
+        }
+        stage('Upadting Manifest'){
+            steps{
+                script{ 
+                    sh '''
+                    git config --global user.name "SCION_SCOPE"
+                    git config --global user.email "mshow1980@aol.com"
+                    git add manifest.yaml
                     git commit -m 'updated manifest'
                     git push origin main
                     echo "done!!"
