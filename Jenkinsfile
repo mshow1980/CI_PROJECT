@@ -41,7 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('CLEANWS'){
+        stage('Quality_Gate'){
             steps{
                 script{
                     waitForQualityGate abortPipeline: false, credentialsId: 'SOnar-Token'
