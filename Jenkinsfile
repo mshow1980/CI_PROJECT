@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-    {
+    
         tools {
             maven 'mvn3'
             nodejs 'npm23'
@@ -29,7 +29,6 @@ pipeline {
                 steps('CHECKOUT-SCM'){
                     script{
                         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CI_PROJECT.git']])
-                    }
                 }
             }
         }
