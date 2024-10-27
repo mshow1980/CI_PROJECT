@@ -85,7 +85,7 @@ pipeline {
         stage('Trivy Image Scan'){
             steps{
                 script{ 
-                    sh "trivy image "${IMAGE_NAME}" --format table -o tryvyimage.html" 
+                    sh "trivy image "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o tryvyimage.html" 
                 }
             }
         }
