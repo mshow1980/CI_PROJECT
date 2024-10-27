@@ -40,8 +40,8 @@ pipeline {
                 script{
                     withSonarQubeEnv('SonarQube_server') {
                         sh """
-                        $SCANNER_HOME/bin/SonarQube_Scanner -Dsonar.projectName=reditt-app\
-                        -Dsonar.projectKey=reditt-app
+                        $SCANNER_HOME/bin/SonarQube_Scanner -Dsonar.projectName=late_night\
+                        -Dsonar.projectKey=late_night
                         """
                     }
                 }
