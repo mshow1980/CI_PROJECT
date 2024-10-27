@@ -43,7 +43,7 @@ pipeline {
         stage('TRIVY FIle Scan'){
             steps{
                 script{
-                    sh "trivy fs --format table -o mickey.txt ."
+                    sh "trivy fs --format table -o mickey.html ."
                 }
             }
         }
@@ -77,8 +77,7 @@ pipeline {
             steps{
                 script{ 
                     withDockerRegistry(credentialsId: 'docker-login', toolName: 'doker') {
-                        docker_image = docker.build("${IMAGE_NAME}")
-                        docker_image = docker.build('latest')
+                        docker_image = docker.build"${IMAGE_NAME}"
                     }
                 }
             }
@@ -87,7 +86,7 @@ pipeline {
             steps{
                 script{ 
 
-                    sh 'trivy image --scanners vuln --scanners misconfig "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o trvy-image.txt ' 
+                    sh 'trivy image --scanners vuln --scanners misconfig "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o trvy-image.html ' 
                 }
             }
         }
@@ -95,7 +94,8 @@ pipeline {
             steps{
                 script{ 
                     withDockerRegistry(credentialsId: 'docker-login') {
-                        docker_image.push "${IMAGE_TAG}"
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
 
                     }  
                 }
@@ -110,7 +110,7 @@ pipeline {
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
             to: 'scionventureslls@gmail.com',                              
-            attachmentsPattern: 'mickey.txt,trvy-image.txtt'
+            attachmentsPattern: 'mickey.html,trvy-image.html'
         }
     }
 }
