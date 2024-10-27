@@ -100,19 +100,7 @@ pipeline {
                     }  
                 }
             }
-        } 
-    }
-    post {
-    always {
-        emailext attachLog: true,
-            subject: "'${currentBuild.result}'",
-            body: "Project: ${env.JOB_NAME}<br/>" +
-                "Build Number: ${env.BUILD_NUMBER}<br/>" +
-                "URL: ${env.BUILD_URL}<br/>",
-            to: 'scionventureslls@gmail.com',                              
-            attachmentsPattern: 'mickey.html,trvy-image.html'
         }
-    }
         stage('Second Git Checkout'){
             steps{
                 script{ 
@@ -126,7 +114,19 @@ pipeline {
                     git push origin main
                     echo "done!!"
                     '''
+                }
             }
+        } 
+    }
+    post {
+    always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: "Project: ${env.JOB_NAME}<br/>" +
+                "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                "URL: ${env.BUILD_URL}<br/>",
+            to: 'scionventureslls@gmail.com',                              
+            attachmentsPattern: 'mickey.html,trvy-image.html'
         }
     }
 }
