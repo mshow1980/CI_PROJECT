@@ -108,7 +108,7 @@ pipeline {
                     sh ''' 
                     cat manifest.yaml
                     sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' manifest.yaml
-                    cat manifest.yam
+                    cat manifest.yaml
                     '''
                 }
             }
