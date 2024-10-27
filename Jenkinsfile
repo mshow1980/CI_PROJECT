@@ -24,13 +24,11 @@ pipeline {
                 }
             }
         }
-        stages{
-            stage{
-                steps('CHECKOUT-SCM'){
-                    script{
-                        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CI_PROJECT.git']])
+        stage{
+            steps('CHECKOUT-SCM'){
+                script{
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CI_PROJECT.git']])
                 }
             }
         }
     }
-}
