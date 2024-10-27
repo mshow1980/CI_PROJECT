@@ -73,14 +73,6 @@ pipeline {
                 }
             }
         }
-        stage('Publish To Nexus'){
-            steps{
-                script{
-                    nexusArtifactUploader credentialsId: 'Nexus-Token', groupId: '3.1', nexusUrl: 'http://54.237.10.197:8009/repository/reddit_app/', nexusVersion: 'nexus2', protocol: 'http', repository: 'reddit_app', version: '3.7'
-                    sh " npm publish"
-                }
-            }
-        }
         stage('Docker build'){
             steps{
                 script{ 
@@ -93,7 +85,7 @@ pipeline {
         stage('Trivy Image Scan'){
             steps{
                 script{ 
-                    sh "trivy image ${docker_image} --format table -o tryvyimage.html" 
+                    sh "trivy image "${IMAGE_NAME}" --format table -o tryvyimage.html" 
                 }
             }
         }
