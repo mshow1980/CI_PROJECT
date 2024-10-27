@@ -104,12 +104,13 @@ pipeline {
         stage('Updating Image Tag'){
             steps{
                 script{ 
-                    git branch: 'main', credentialsId: 'github', url: 'https://github.com/mshow1980/CD_PROJECT_ARGOCD.git'
-                    sh ''' 
-                    cat manifest.yaml
-                    sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' manifest.yaml
-                    cat manifest.yaml
-                    '''
+                    withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                         sh ''' 
+                            cat manifest.yaml
+                            sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' manifest.yaml
+                            cat manifest.yaml
+                        '''
+                    }
                 }
             }
         }
@@ -124,7 +125,6 @@ pipeline {
                     git push origin main
                     echo "done!!"
                     '''
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CD_PROJECT_ARGOCD.git']]) 
                     sh 'git push https://github.com/mshow1980/CD_PROJECT_ARGOCD.git main'
                 }
             }
