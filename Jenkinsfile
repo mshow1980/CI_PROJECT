@@ -77,7 +77,8 @@ pipeline {
             steps{
                 script{ 
                     withDockerRegistry(credentialsId: 'docker-login', toolName: 'doker') {
-                        docker_image = docker.build "${IMAGE_NAME}"
+                        docker_image = docker.build("${IMAGE_NAME}")
+                        docker_image = docker.build('latest')
                     }
                 }
             }
@@ -85,10 +86,20 @@ pipeline {
         stage('Trivy Image Scan'){
             steps{
                 script{ 
-                    sh "trivy image "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o tryvyimage.html" 
+                    sh "trivy image --scanners vuln --scanners misconfig "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o tryvyimage.html" 
                 }
             }
         }
+        stage('Image Tag& Push'){
+            steps{
+                script{ 
+                    withDockerRegistry(credentialsId: 'docker-login') {
+                        docker_image.push "${IMAGE_TAG}"
+
+                    }  
+                }
+            }
+        } 
     }
     post {
     always {
