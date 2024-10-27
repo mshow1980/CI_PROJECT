@@ -43,7 +43,7 @@ pipeline {
         stage('TRIVY FIle Scan'){
             steps{
                 script{
-                    sh "trivy fs --format table -o mickey.html ."
+                    sh "trivy fs --format table -o mickey.txt ."
                 }
             }
         }
@@ -86,7 +86,7 @@ pipeline {
         stage('Trivy Image Scan'){
             steps{
                 script{ 
-                    sh "trivy image --scanners vuln --scanners misconfig "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o tryvyimage.html" 
+                    sh "trivy image --scanners vuln --scanners misconfig "${IMAGE_NAME}" --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table -o trvy-image.txt" 
                 }
             }
         }
@@ -108,8 +108,8 @@ pipeline {
             body: "Project: ${env.JOB_NAME}<br/>" +
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
-            to: 'scnionventureslls@gmail.com',                              
-            attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+            to: 'scionventureslls@gmail.com',                              
+            attachmentsPattern: 'mickey.txt,trvy-image.txtt'
         }
     }
 }
