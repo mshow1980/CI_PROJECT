@@ -104,8 +104,8 @@ pipeline {
         stage('Second Git Checkout'){
             steps{
                 script{ 
-                    sh '''
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CD_PROJECT_ARGOCD.git']])  
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CD_PROJECT_ARGOCD.git']]) 
+                    sh ''' 
                     cat manifest.yaml
                     sed -i 's|image: mshow1980/reditt-app:.* |image: mshow1980/reditt-app:'${IMAGE_TAG}'/'
                     echo "manifest.yaml"
