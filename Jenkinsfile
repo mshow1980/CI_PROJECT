@@ -6,6 +6,7 @@ pipeline {
         jdk     'jdk17' 
     }
     environment {
+        SCANNER_HOME = tool 'SonarQube_Scanner'
         DOCKER_USER = 'mshow1980'
         APP_NAME  = 'reditt-app'
         IMAGE_NAME = "${DOCKER_USER}"+"/"+"${ APP_NAME}"
@@ -25,6 +26,25 @@ pipeline {
             steps{
                 script{
                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mshow1980/CI_PROJECT.git']]) 
+                }
+            }
+        }
+        stage('SOnarqube Analysis'){
+            steps{
+                script{
+                    withSonarQubeEnv('SonarQube_server') {
+                        sh """
+                        $SCANNER_HOME/bin/SonarQube_Scanner -Dsonar.projectName=reditt-app\
+                        -Dsonar.projectKey=reditt-app
+                        """
+                    }
+                }
+            }
+        }
+        stage('CLEANWS'){
+            steps{
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'SOnar-Token'
                 }
             }
         }
