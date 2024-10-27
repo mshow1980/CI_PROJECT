@@ -5,7 +5,7 @@ pipeline {
         jdk     'jdk17' 
     }
     environment {
-        SCANNER_HOME = tool 'sonar_scanner'
+        SCANNER_HOME = tool 'sonar-scanner'
         DOCKER_USER = 'mshow1980'
         APP_NAME  = 'reditt-app'
         IMAGE_NAME = "${DOCKER_USER}"+"/"+"${ APP_NAME}"
@@ -40,7 +40,7 @@ pipeline {
                 script{
                     withSonarQubeEnv('SonarQube_server') {
                         sh """
-                        $SCANNER_HOME/bin/sonar_scanner -Dsonar.projectName=late_night\
+                        $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=late_night\
                         -Dsonar.projectKey=late_night
                         """
                     }
